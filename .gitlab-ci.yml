@@ -1,0 +1,10 @@
+image: python:latest
+
+stages:
+- test
+
+1-exec_MT_k:
+  script: python3 test-1-exec_MT_k.py
+
+
+
