@@ -59,9 +59,48 @@ def exec_MT_1(M,L,i0):
     # M : machine de Turing deterministe a 1 bande
     # L : liste representant la bande initiale
     # i0 : position initiale de la tete de lecture
-    return
+    d,q0,qok,qko = M
+    q = q0
+    t = i0
+    while True:
+        # print_config_1(L,t,q,qok,qko)
+        T = assoc_f(d,(q,L[t]))
+        if T != None:
+            q, ns, m = T
+            L[t] = ns
+            if m == "R":
+                t += 1
+                if t >= len(L):
+                    L.append("Z")
+            else:
+                t -= 1
+                if t < 0:
+                    t = 0
+                    L.insert(0,"Z")
+        else:
+            break
+    return (q == qok,t,L)
 
 # exemples
 
 # exec_MT_1(M_ex1,["A","a","b","a","a","B"],0)
 # exec_MT_1(M_ex1,["B","a","b","a","a","B"],0)
+
+l_ex2 = [((0,"a"),(1,"X","R")), ((0,"b"),(2,"X","R")), \
+         ((0,"Z"),(4,"Z","R")), ((1,"a"),(1,"a","R")), \
+         ((1,"Y"),(1,"Y","R")), ((1,"b"),(3,"Y","L")), \
+         ((2,"b"),(2,"b","R")), ((2,"Y"),(2,"Y","R")), \
+         ((2,"a"),(3,"Y","L")), ((3,"a"),(3,"a","L")), \
+         ((3,"b"),(3,"b","L")), ((3,"Y"),(3,"Y","L")), \
+         ((3,"X"),(0,"X","R")), ((0,"Y"),(0,"Y","R"))]
+
+M_ex2 =(l_ex2,0,4,5)
+
+
+d_isneg = [((0,"0"),(1,"0","R")), ((0,"1"),(2,"1","R")), \
+           ((1,"0"),(1,"0","R")), ((1,"1"),(2,"1","R")), ((1,"Z"),(3,"Z","L")),\
+           ((2,"0"),(1,"0","R")), ((2,"1"),(2,"1","R")), ((2,"Z"),(4,"Z","L")),\
+           ((3,"0"),(3,"0","L")), ((3,"1"),(3,"1","L")), ((3,"Z"),(5,"Z","R")),\
+           ((4,"0"),(4,"0","L")), ((4,"1"),(4,"1","L")), ((4,"Z"),(6,"Z","R"))]
+
+M_isneg =(d_isneg,0,6,5)
